@@ -1,0 +1,6 @@
+{% liquid
+      assign lengthInCentimeters = value | escape
+      assign lengthInInches = lengthInCentimeters | replace: "cm", '' 
+      assign lengthInInches = lengthInInches | times: 0.393701 | ceil
+      assign lengthInInches = lengthInInches | append: '"'
+    %}
