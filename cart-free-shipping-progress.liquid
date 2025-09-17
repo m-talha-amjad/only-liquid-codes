@@ -1,0 +1,35 @@
+       {%- liquid
+          assign threshold =  metaobjects.free_shipping_threshold.free-shipping-threshold-hbtypylg
+          assign threshold =  threshold.amount.value
+          assign remaining = threshold | minus: cart.total_price
+          assign total_price = cart.total_price | plus: 0.0
+          assign progress = total_price | divided_by: threshold
+          assign progress = progress | times: 100
+          if threshold <= cart.total_price
+            assign progress = '100'
+          endif
+        %}
+        {% comment %} <div class="pi-test">
+          {{ threshold }}
+
+        </div> {% endcomment %}
+        {% unless cart == empty %}  
+        <div class="progress-bar" data-threshold="{{ threshold }}" data-progress="{{progress}}">
+          <!-- Free shipping progress markup -->
+          <div class="cart-shipping__wrapper">
+            <div class="progress_message">
+              {% if threshold > cart.total_price %}
+                <p class="cart-shipping__numOuter">
+                  You miss {{ remaining | money_without_currency }}$<span class="cart-shipping__num"></span> for free
+                  shipping!
+                </p>
+              {% elsif threshold <= cart.total_price %}
+                <p class="cart-shipping__success">Nice, we'll pay for shipping 🥳</p>
+              {% endif %}
+            </div>
+            <div class="cart-shippingThreshold__bar">
+              <span class="cart-shippingThreshold__progress" progress-bar-width style="width: {{progress}}%"></span>
+            </div>
+          </div>
+        </div>
+        {% endunless %}
